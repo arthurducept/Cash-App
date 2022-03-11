@@ -114,6 +114,7 @@ class _HomeViewState extends State<HomeView> {
                       child: ListView(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
                         children: const [
                           HorizontalTransactionItem(
                             leading: Icon(Icons.attach_money, size: 50, color: MyDarkTheme.primaryText,),

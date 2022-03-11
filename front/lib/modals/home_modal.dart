@@ -24,6 +24,16 @@ class _HomeModalState extends State<HomeModal> with TickerProviderStateMixin {
     super.initState();
   }
 
+  double _getAnimatedHeight() {
+    if(_panelOffset >= 0.5) return 1;
+    return _panelOffset*2;
+  }
+
+  double _getAnimatedOpacity() {
+    if(_panelOffset <= 0.5) return 0;
+    return (_panelOffset-0.5)*2;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -74,11 +84,11 @@ class _HomeModalState extends State<HomeModal> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: _panelOffset * 120,
-                  child: ClipRect(
+                ClipRect(
+                  child: SizedBox(
+                    height: _getAnimatedHeight() * 120,
                     child: Opacity(
-                      opacity: _panelOffset,
+                      opacity: _getAnimatedOpacity(),
                       child: Column(
                         children: [
                           Align(
@@ -131,23 +141,26 @@ class _HomeModalState extends State<HomeModal> with TickerProviderStateMixin {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: 50,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        contentPadding: const EdgeInsets.only(right: 16),
-                        leading: const SizedBox.square(
-                          dimension: 56,
-                          child: Center(
-                            child: Icon(Icons.attach_money, color: MyDarkTheme.primaryText, size: 64),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 32),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: 50,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          contentPadding: const EdgeInsets.all(0.0),
+                          leading: const SizedBox.square(
+                            dimension: 56,
+                            child: Center(
+                              child: Icon(Icons.attach_money, color: MyDarkTheme.primaryText, size: 64),
+                            ),
                           ),
-                        ),
-                        title: const Text('Salaire', style: MyDarkTheme.listTitle,),
-                        subtitle: const Text("Mar. 1 Mars à 12:46", style: MyDarkTheme.listSubtitle,),
-                        trailing: Text("+ 1000.77 €", style: MyDarkTheme.listAction.copyWith(color: MyDarkTheme.success),),
-                      );
-                    },
+                          title: const Text('Salaire', style: MyDarkTheme.listTitle,),
+                          subtitle: const Text("Mar. 1 Mars à 12:46", style: MyDarkTheme.listSubtitle,),
+                          trailing: Text("+ 1000.77 €", style: MyDarkTheme.listAction.copyWith(color: MyDarkTheme.success),),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
